@@ -1,7 +1,10 @@
 import sendEmail from "../config/resendEmail.js";
 import userModel from "../models/user.model.js";
-import bcryptjs from "bcryptjs"
-import verificationEmailTemplate from "../utilities/verifyEmailTemplate.js";
+import bcryptjs from "bcryptjs";
+import verifyEmailTemplate from "../utilities/verifyEmailTemplate.js";
+import dotenv from "dotenv";
+dotenv.config()
+
 export const registerUserController =async (req , res)=>{
     try {
         const {name , email , password} = req.body ;
@@ -39,17 +42,20 @@ export const registerUserController =async (req , res)=>{
     const newUser  = new userModel(payload)
     const save = await newUser.save();
 
-    const verifyEmailUrl =  `${process.env.FRONTEND_URL}/verify-email?code=${save._id}`;
+    const verifyEmailUrl = `${process.env.FRONTEND_URL}/verify-email?code=${save._id}`;
+   
 
     const verificationEmail = await sendEmail({
         sendTo : email,
         subject : "Verify email from DeshDokan",
-        html : verificationEmailTemplate({
-            name ,
+        html : verifyEmailTemplate({
+            name : name,
             url : verifyEmailUrl
         })
  
     })
+
+    // console.log("this is from user controller" , verificationEmail);
 
     return res.json({
         message: "Registration successFull. ",

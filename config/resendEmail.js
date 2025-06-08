@@ -1,5 +1,6 @@
 import { Resend } from "resend";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
+
 dotenv.config()
 
 if(!process.env.RESEND_API)
@@ -8,7 +9,7 @@ if(!process.env.RESEND_API)
 }
 const resend = new Resend(process.env.RESEND_API);
 
-const sendEmail =async ({name , sendTo , subject , html}) =>{
+const sendEmail =async ({ sendTo , subject , html}) =>{
     try {
         const { data, error } = await resend.emails.send({
           from: "DeshDokan <onboarding@resend.dev>",
@@ -18,14 +19,15 @@ const sendEmail =async ({name , sendTo , subject , html}) =>{
         });
 
         
-        if (error) {
-          return console.error({ error });
-        }
+    //    console.log("this is from",error);
+    if (error) {
+      return console.error({ error });
+    }
 
         return data
 
     } catch (error) {
-        console.log(error);
+        console.log("This is from resend email",error);
     }
 }
 
