@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
   },
   verify_email: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   last_login_date: {
     type: Date,
